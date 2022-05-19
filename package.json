@@ -2,7 +2,7 @@
   "name": "doc-builder",
   "version": "0.1.0",
   "private": true,
-  "proxy":"https://testaccountapi.mongo.cosmos.azure.com:443",
+  "proxy":"https://localhost:7029/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",
