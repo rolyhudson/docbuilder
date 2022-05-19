@@ -6,6 +6,10 @@ import Select from 'react-select';
 import { config } from './Constants'
 var apiurl = config.url.API_URL
 
+const showhide = (showhide) => ({
+    display: (showhide) ? 'inline' : 'none',
+  });
+
 class Container extends Component{
 
     constructor(props) {
@@ -125,86 +129,69 @@ class Container extends Component{
      return (
          <div className='childrenContainer'>
              
-             Container Name: 
+             Container type: 
+             <div style ={{display:'inline-block'}}>
              <Select
+             
                 value={selectedOption}
                 onChange={this.handleChange}
                 options={this.state.linkedContainers}
                 />
-             <button onClick={this.addContainer}>+ Container</button>
-             <button onClick={() => this.removeContainerFromParent(this.props.id)}>- Container</button>
+             </div>
+             <button onClick={() => this.removeContainerFromParent(this.props.id)}>-</button>
              <p>{this.props.id}</p>
              <div className='childrenContainer'>
-                 
-                 
                  {
-                     this.state.showStrategies?
-                     (
-                        <div>
-                            <p>strategies</p>
-                            <button onClick={this.toggleStrategyDisplay}>-</button>
-                            <button onClick={this.addStrategy}>+ Strategy</button>
-                            <hr/>
-                            
-                            {
-                                
-                                this.state.strategies.map(strategy=>
-                                    {
-                                        return(
-                                            <Strategy 
-                                            key = {strategy.props.id} 
-                                            id = {strategy.props.id}
-                                            name= {strategy.props.name}
-                                            removeFromParent = {this.removeChildStrategy}
-                                            parentName = {this.state.selectedOption.label}
-                                            />
-                                        )
-                                        })
-                            }
-                        </div>
-                     )
-                     :
-                     (
-                        <div>
-                            <p>strategies</p>
-                            <button onClick={this.toggleStrategyDisplay}>+</button>
-                            
-                            <hr/>
-                        </div>
-                     )
+                     <div>
+                     <p>strategies</p>
+                     <button onClick={this.toggleStrategyDisplay}>-+</button>
+                     <button onClick={this.addStrategy}>+ Strategy</button>
+                     <hr/>
+                     <div style = {showhide(this.state.showStrategies) }>
+                     {
+                         
+                         this.state.strategies.map(strategy=>
+                             {
+                                 return(
+                                     <Strategy 
+                                     key = {strategy.props.id} 
+                                     id = {strategy.props.id}
+                                     name= {strategy.props.name}
+                                     removeFromParent = {this.removeChildStrategy}
+                                     parentName = {this.state.selectedOption.label}
+                                     />
+                                 )
+                             })
+                     }
+                     </div>
+                 </div>
                     
                  }
              </div>
              <div className='childrenContainer'>
                  {
-                     this.state.showContainers?
-                     (
-                        <div>
-                        <p>containers</p>
-                        <button onClick={this.toggleComponentDisplay}>-</button>
-                        {
-                            this.state.containers.map(container=>
-                               {
-                                   return(
-                                       <Container 
-                                       key = {container.props.id} 
-                                       id = {container.props.id}
-                                       name= {container.props.name}
-                                       removeFromParent = {this.removeChildContainer}
-                                       parentName = {this.state.selectedOption.label}
-                                       />
-                                   )
-                                   })
-                        }
-                        </div>
-                     )
-                     :
-                     (
-                         <div>
-                             <p>containers</p>
-                            <button onClick={this.toggleComponentDisplay}>+</button>
-                         </div>
-                     )
+                     <div>
+                     <p>containers</p>
+                     <button onClick={this.toggleComponentDisplay}>-+</button>
+                     <button onClick={this.addContainer}>+ Container</button>
+                     <hr/>
+                     <div style = {showhide(this.state.showContainers) }>
+                     {
+                         this.state.containers.map(container=>
+                            {
+                                return(
+                                    <Container 
+                                    key = {container.props.id} 
+                                    id = {container.props.id}
+                                    name= {container.props.name}
+                                    removeFromParent = {this.removeChildContainer}
+                                    parentName = {this.state.selectedOption.label}
+                                    />
+                                )
+                             })
+                     }
+                     </div>
+                     </div>
                  }
                  
              </div>

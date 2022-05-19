@@ -21,6 +21,7 @@ class Strategy extends Component{
         this.setState({ selectedOption }, () =>
           console.log(`Option selected:`, this.state.selectedOption)
         );
+        
       };
 
     removeStrategyFromParent = id =>
@@ -29,7 +30,16 @@ class Strategy extends Component{
         this.props.removeFromParent(id);
     }
 
+    optionISelected(){
+        return this.state.selectedOption ? true : false;
+    }
+
     addOption = () =>{
+        if(!this.optionISelected())
+        {
+            alert('set strategy type before adding objects');
+            return;
+        }
         let currentOptions= this.state.options;
         let id = uuid();
         
@@ -66,15 +76,16 @@ class Strategy extends Component{
     render(){
 
         const { selectedOption } = this.state;
-
         return(
             <div className='strategyDiv'>
-                <button onClick={() => this.removeStrategyFromParent(this.props.id)}>-</button>
+                <div style ={{display:'inline-block'}}>
                 <Select
                 value={selectedOption}
                 onChange={this.handleChange}
                 options={this.state.linkedStrategies}
                 />
+                </div>
+                <button onClick={() => this.removeStrategyFromParent(this.props.id)}>-</button>
                 <div>
                     options: <button onClick={this.addOption}>+</button>
                     <hr/>
