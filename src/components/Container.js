@@ -99,8 +99,8 @@ class Container extends Component{
         if(this.state.id===0)//root
             uri='https://designresponseapi.azurewebsites.net/api/Responses/GetContainers';
         else
-            uri ='/api/Responses/GetLinkedContainers?parentName='+this.props.parentName;
-        fetch(uri)
+            uri ='https://designresponseapi.azurewebsites.net/api/Responses/GetLinkedContainers?parentName='+this.props.parentName;
+        fetch(uri, { mode: 'cors' })
             .then(response =>  response.json())
             .then(json => this.setState ( {linkedContainers : json}))
             .catch(error => alert(error.message));
