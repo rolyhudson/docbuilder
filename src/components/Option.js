@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import Select from 'react-select';
+import { config } from './Constants'
+var apiurl = config.url.API_URL
 
 class Option extends Component{
 
@@ -32,7 +34,7 @@ class Option extends Component{
     }
     
     componentDidMount(){
-        var uri ='/api/Responses/GetStrategyOptions?parentName='+this.props.parentName;
+        var uri =apiurl+'/api/Responses/GetStrategyOptions?parentName='+this.props.parentName;
         fetch(uri)
             .then(response =>  response.json())
             .then(json => this.setState ( {linkedOptions : json}))

@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import { v4 as uuid } from 'uuid';
 import Option from './Option';
 import Select from 'react-select';
+import { config } from './Constants'
+var apiurl = config.url.API_URL
 
 class Strategy extends Component{
     constructor(props) {
@@ -54,7 +56,7 @@ class Strategy extends Component{
     }
 
     componentDidMount(){
-        var uri ='/api/Responses/GetLinkedStrategies?parentName='+this.props.parentName;
+        var uri =apiurl+'/api/Responses/GetLinkedStrategies?parentName='+this.props.parentName;
         fetch(uri)
             .then(response =>  response.json())
             .then(json => this.setState ( {linkedStrategies : json}))

@@ -3,6 +3,9 @@ import { v4 as uuid } from 'uuid';
 import Strategy from './Strategy';
 import Select from 'react-select';
 
+import { config } from './Constants'
+var apiurl = config.url.API_URL
+
 class Container extends Component{
 
     constructor(props) {
@@ -96,10 +99,12 @@ class Container extends Component{
 
     componentDidMount(){
         var uri='';
+        console.log(apiurl);
         if(this.state.id===0)//root
-            uri='https://designresponseapi.azurewebsites.net/api/Responses/GetContainers';
+            uri+='/api/Responses/GetContainers';
         else
-            uri ='https://designresponseapi.azurewebsites.net/api/Responses/GetLinkedContainers?parentName='+this.props.parentName;
+            uri ='/api/Responses/GetLinkedContainers?parentName='+this.props.parentName;
+        console.log(uri);
         fetch(uri, { mode: 'cors' })
             .then(response =>  response.json())
             .then(json => this.setState ( {linkedContainers : json}))
