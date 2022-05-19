@@ -97,7 +97,7 @@ class Container extends Component{
     componentDidMount(){
         var uri='';
         if(this.state.id===0)//root
-            uri='/api/Responses/GetContainers';
+            uri='https://designresponseapi.azurewebsites.net/api/Responses/GetContainers';
         else
             uri ='/api/Responses/GetLinkedContainers?parentName='+this.props.parentName;
         fetch(uri)
