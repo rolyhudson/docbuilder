@@ -4,6 +4,13 @@ import Strategy from './Strategy';
 import Select from 'react-select';
 
 import { config } from './Constants'
+
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+
+import {addToStore} from '../actions';
+import { Provider } from 'react-redux';
+
 var apiurl = config.url.API_URL
 
 const showhide = (showhide) => ({
@@ -46,7 +53,7 @@ class Container extends Component{
         currentContainers.push(<Container id ={id} name = {this.state.name + '.c_'+n} />);
         console.log("added container", id);
         this.setState({containers:currentContainers });
-        
+        //this.props.addToStore(id);
     }
 
     removeContainerFromParent = id =>
@@ -138,7 +145,7 @@ class Container extends Component{
                 options={this.state.linkedContainers}
                 />
              </div>
-             <button onClick={() => this.removeContainerFromParent(this.props.id)}>-</button>
+             <button onClick={() => this.removeContainerFromParent(this.props.id)}>x</button>
              <p>{this.props.id}</p>
              <div className='childrenContainer'>
                  {
@@ -180,6 +187,7 @@ class Container extends Component{
                          this.state.containers.map(container=>
                             {
                                 return(
+                                    
                                     <Container 
                                     key = {container.props.id} 
                                     id = {container.props.id}
@@ -201,4 +209,14 @@ class Container extends Component{
      )
  }   
 }
-export default Container;
+
+function mapStateToProps(state){
+    return {
+        state: state
+    }
+}
+function mapDispatchToProps(dispatch){
+    return bindActionCreators({addToStore}, dispatch);
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Container);

@@ -1,6 +1,6 @@
 const prod = {
     url: {
-     API_URL: 'https://designresponseapi.azurewebsites.net'}
+     API_URL: 'https://rat-prototype-api.azurewebsites.net'}
    };
 const dev = {
     url: {//just use the package proxy

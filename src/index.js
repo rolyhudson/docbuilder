@@ -1,15 +1,23 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import {Router, Switch, Route} from 'react-router-dom';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 
+import rootReducer from './reducers';
 import App from './components/App';
-import Header from './components/Header';
 import './index.css'
+
+
+const store = createStore(rootReducer);
+
 
 
 const container = document.getElementById('root');
 const root = createRoot(container); // createRoot(container!) if you use TypeScript
-root.render(<App />);
+root.render(
+<Provider store = {store}>
+<App />
+</Provider>);
 
 // new Promise((resolve,reject) => {
 //     return reject(new Error('failed'));
