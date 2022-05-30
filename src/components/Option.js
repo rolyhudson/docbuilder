@@ -34,7 +34,7 @@ class Option extends Component{
     }
     
     componentDidMount(){
-        var uri =apiurl+'/api/Responses/GetStrategyOptions?parentName='+this.props.parentName;
+        var uri =apiurl+'/api/Containers/GetStrategyOptions?parentName='+this.props.parentName;
         fetch(uri)
             .then(response =>  response.json())
             .then(json => this.setState ( {linkedOptions : json}))

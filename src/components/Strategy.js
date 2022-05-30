@@ -66,10 +66,11 @@ class Strategy extends Component{
     }
 
     componentDidMount(){
-        var uri =apiurl+'/api/Responses/GetLinkedStrategies?parentName='+this.props.parentName;
+        var uri =apiurl+'/api/Containers/GetLinkedStrategies?parentName='+this.props.parentName;
+        
         fetch(uri)
             .then(response =>  response.json())
-            .then(json => this.setState ( {linkedStrategies : json}))
+            .then(json => this.setState ( {linkedStrategies : json}))//
             .catch(error => alert(error.message));
     }
 

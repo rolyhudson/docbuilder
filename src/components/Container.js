@@ -112,9 +112,9 @@ class Container extends Component{
         var uri=apiurl;
         console.log(apiurl);
         if(this.state.id===0)//root
-            uri +='/api/Responses/GetContainers';
+            uri +='/api/Containers/GetContainers';
         else
-            uri +='/api/Responses/GetLinkedContainers?parentName='+this.props.parentName;
+            uri +='/api/Containers/GetLinkedContainers?parentName='+this.props.parentName;
         console.log(uri);
         fetch(uri, { mode: 'cors' })
             .then(response =>  response.json())

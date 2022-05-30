@@ -23,7 +23,7 @@ class App extends Component {
              <input type="text" name="name" defaultValue='Project name'/>
              </div>
              <hr/>
-                <Container id={0} name='c_root'/>
+                <Container id={0}/>
             </div>
         )
     }
