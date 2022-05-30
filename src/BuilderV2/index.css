@@ -1,0 +1,54 @@
+body{
+    text-align: left;
+    padding: 5%;
+}
+.project-item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    padding: 5px;
+    }
+    .project-img{
+        display: inline-block;
+        right: 0;
+        width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 1px solid black;
+    border-radius: 2px;
+    }
+    .project-title{
+        display: inline-block;
+    text-align: left;
+    padding-right: 10px;
+    width: 400px;
+    
+    }
+    .header{
+        width: 100%;
+    }
+    .header-link{
+        display: inline;
+    }
+    .add{
+        cursor: pointer;
+        font-size: 20px;
+        margin-right: 10px;
+    }
+    .flex-parent {
+        display: flex;
+      }
+      .flex-child {
+        flex: 0.25;
+        margin: 5px;
+        padding: 5px;
+        border: 1px solid black;
+    border-radius: 2px;
+      }
+      .option{
+        margin: 2px;
+        padding: 2px;
+        border: 1px solid black;
+    border-radius: 2px;
+      }

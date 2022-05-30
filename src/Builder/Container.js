@@ -5,11 +5,6 @@ import Select from 'react-select';
 
 import { config } from './Constants'
 
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-
-import {addToStore} from '../actions';
-import { Provider } from 'react-redux';
 
 var apiurl = config.url.API_URL
 
@@ -210,13 +205,5 @@ class Container extends Component{
  }   
 }
 
-function mapStateToProps(state){
-    return {
-        state: state
-    }
-}
-function mapDispatchToProps(dispatch){
-    return bindActionCreators({addToStore}, dispatch);
-}
 
-export default connect(mapStateToProps,mapDispatchToProps)(Container);
+export default Container;
