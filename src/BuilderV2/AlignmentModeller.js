@@ -126,9 +126,9 @@ class AlignmentModeller extends Component{
     const data = {
       name: ''
     };
-    editor.addNode('foo', 1, 1, 100, 200, 'foo', data, 'Foo');
-    editor.addNode('bar', 1, 1, 400, 100, 'bar', data, 'Bar A');
-    editor.addNode('bar', 1, 1, 400, 300, 'bar', data, 'Bar B');
+    editor.addNode('foo', 1, 1, 100, 200, 'foo', data, 'INCREASED RESILIENCY');
+    editor.addNode('bar', 1, 1, 400, 100, 'bar', data, ' INCREASE BUILDING FLEXIBILITY');
+    editor.addNode('bar', 1, 1, 400, 300, 'bar', data, 'ENHANCE BUILDING PERFORMANCE');
 
     editor.addConnection(1, 2, "output_1", "input_1");
     editor.addConnection(1, 3, "output_1", "input_1");
