@@ -26,12 +26,12 @@ class DecisionAnalysis extends Component{
 
         let params = new URLSearchParams(window.location.search);
         
-        this.state.mcda.id = params.get('id');
+        let id = params.get('id');
 
-        if(this.state.mcda.id !== null)
+        if(id !== null)
         {
-            let m = this.props.mcdas.find(element => element.id === this.state.id);
-            console.log("found mcda",m);
+            let m = this.props.mcdas.find(element => element.id === id);
+            console.log("found mcda", this.state.mcda.id);
             this.setState({mcda: structuredClone(m) })
         }
             
