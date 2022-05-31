@@ -40,15 +40,22 @@ body{
         display: flex;
       }
       .flex-child {
-        flex: 0.25;
+        flex: 0.33;
         margin: 5px;
         padding: 5px;
         border: 1px solid black;
     border-radius: 2px;
       }
       .option{
-        margin: 2px;
+
+    display: inline;
+      }
+      .optionBox{
+          width: 100%;
+          margin: 2px;
         padding: 2px;
         border: 1px solid black;
     border-radius: 2px;
       }
+
+
