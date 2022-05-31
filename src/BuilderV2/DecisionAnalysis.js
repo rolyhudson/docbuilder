@@ -4,8 +4,9 @@ import Select from 'react-select';
 import { config } from './Constants';
 import { randomName } from './NameGenerator';
 import { connect } from 'react-redux';
-import {addMCDA} from './actions';
+import {addMCDA, updateMCDA,getMCDA} from './actions';
 import Option from './Option';
+import { v4 as uuidv4 } from 'uuid';
 
 import './index.css';
 
@@ -16,18 +17,30 @@ class DecisionAnalysis extends Component{
         elements : [],
         options:[],
         optionssublist : [],
-        optionsselected : [],
         selectedElement :{value:'patient room', label : 'patient room'},
-        name : ''
+        mcda :{name: randomName('MCDA'), id :  uuidv4(), optionsselected : []}
         
     }
 
     componentDidMount(){
 
         let params = new URLSearchParams(window.location.search);
-        let id = params.get('id');
         
-        id? this.setState({name: this.props.mcdas.find(element => element.id === id).name }): this.setState({name: randomName('MCDA')});
+        this.state.mcda.id = params.get('id');
+
+        if(this.state.mcda.id !== null)
+        {
+            let m = this.props.mcdas.find(element => element.id === this.state.id);
+            console.log("found mcda",m);
+            this.setState({mcda: structuredClone(m) })
+        }
+            
+        else {
+            this.state.mcda.id =uuidv4();
+            console.log("saving new mcda",this.state.mcda);
+            this.save();
+        }
+            
 
         var uri=apiurl;
         console.log(apiurl);
@@ -48,15 +61,29 @@ class DecisionAnalysis extends Component{
     }
 
     save(){
+        this.props.updateMCDA(this.state.mcda);
+        console.log('saved',this.props.mcdas.find(element => element.id === this.state.mcda.id));
+    }
 
+    new(){
+        this.setState({
+        optionssublist : [],
+        optionsselected : [],
+        selectedElement :{value:'patient room', label : 'patient room'},
+        mcda : {name: randomName('MCDA'), id :  uuidv4() , optionsselected :[]}
+        })
+    }
+
+    nameupdate(value){
+        
     }
 
     addOptionById(option){
-        console.log('adding', option)
-        let opts = this.state.optionssublist.filter(item => item.value !== option.value);
+        let currentMcda = this.state.mcda;
+        currentMcda.optionsselected = [...this.state.mcda.optionsselected, option];
         this.setState(
             {
-                optionsselected : [...this.state.optionsselected, option],
+                mcda: currentMcda,
                 optionssublist :this.state.optionssublist.filter(item => item.value !== option.value)
             }
         )
@@ -64,11 +91,12 @@ class DecisionAnalysis extends Component{
 
     removeOptionById(option){
         console.log('removing', option)
-        
+        let currentMcda = this.state.mcda;
+        currentMcda.optionsselected = this.state.mcda.optionsselected.filter(item => item.value !== option.value);
         this.setState(
             {
                 optionssublist: [...this.state.optionssublist, option],
-                optionsselected :this.state.optionsselected.filter(item => item.value !== option.value)
+                mcda: currentMcda
             }
         )
     }
@@ -112,9 +140,9 @@ class DecisionAnalysis extends Component{
                 <Header/>
                 <h4>Multi Criteria Decision Analysis</h4>
                 MCDA: 
-             <input type="text" value={this.state.name}  onChange={event => this.setState({name: event.target.value})}/>
-             <button type="button" className="btn btn-secondary" onClick={this.save}>New</button>
-             <button type="button" className="btn btn-secondary" onClick={this.save}>Save</button>
+             <input type="text" value={this.state.mcda.name}  onChange={event => this.nameupdate(event.target.value)}/>
+             <button type="button" className="btn btn-secondary" onClick={() => this.new()}>New</button>
+             <button type="button" className="btn btn-secondary" onClick={() => this.save()}>Save</button>
              <hr/>
              <div className='flex-parent'>
                 <div className="flex-child">
@@ -127,11 +155,12 @@ class DecisionAnalysis extends Component{
                 />
                 Options to compare:
                 {
-                    this.state.optionsselected.map((option, index) => {
+                    this.state.mcda.optionsselected.map((option, index) => {
                         return (
-                            <div key = {index}>
+                            <div  key = {index}>
+                                
+                                <div className='optionBox'>
                                 <button type="button" className="btn btn-secondary" onClick={()=>this.removeOptionById(option)}>X</button>
-                                <div style={{display : 'inline-block'}}>
                                 <Option
                             key ={index}
                             name = {option.value}
@@ -148,8 +177,9 @@ class DecisionAnalysis extends Component{
                     this.state.optionssublist.map((option, index) => {
                         return(
                             <div  key = {index}>
+                            
+                            <div className='optionBox' >
                             <button type="button" className="btn btn-secondary" onClick={()=>this.addOptionById(option)}>+</button>
-                            <div style={{display : 'inline-block'}}>
                             <Option
                             key ={index}
                             name = {option.value}
@@ -177,4 +207,4 @@ function mapStateToProps(state){
     };
 }
 
-export default connect(mapStateToProps,{addMCDA}) (DecisionAnalysis);
+export default connect(mapStateToProps,{addMCDA, updateMCDA,getMCDA}) (DecisionAnalysis);

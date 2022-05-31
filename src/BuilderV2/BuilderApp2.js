@@ -14,7 +14,7 @@ export const store = configureStore({
     reducer: {rootReducer},
   });
 
-
+  store.subscribe(()=>console.log(store.getState()));
 class BuilderApp2 extends Component{
     
     render(){

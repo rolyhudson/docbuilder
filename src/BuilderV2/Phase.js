@@ -20,7 +20,7 @@ console.log(this.props);
                 <Header/>
                 <div>Phase : <input type="text" name="name" defaultValue={parentProject.name}/></div>
                 <div>MCDAS</div>
-            <div className='add' onClick={() => this.props.addMCDA({name: randomName('MCDA') , id: uuidv4(), parentPhase: id})}>
+            <div className='add' onClick={() => this.props.addMCDA({name: randomName('MCDA') , id: uuidv4(), parentPhase: id , optionsselected :[]})}>
             +
             </div>
             {

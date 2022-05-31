@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { ADD_PROJECT, ADD_PHASE, GET_PROJECT, GET_MCDA, ADD_MCDA } from "../actions";
+import { ADD_PROJECT, ADD_PHASE, GET_PROJECT, GET_MCDA, ADD_MCDA, UPDATE_MCDA } from "../actions";
 
 
 function projects(state = [], action){
@@ -25,16 +25,41 @@ function phases(state = [], action){
 }
 
 function mcdas(state = [], action){
+    
     switch(action.type){
         case ADD_MCDA:
             state =[...state, action.mcda];
             return state;
         case GET_MCDA:
-            return state.find(element => element.id = action.id);
+            return state.find(element => element.id === action.id);
+        case UPDATE_MCDA:
+            if(state.length === 0){
+                state =[...state, action.mcda];
+                return state;
+            }
+            return updateObjectInArray(state, action);
         default:
             return state;
     }
 }
+
+function updateObjectInArray(array, action) {
+    return array.map((item,index) => {
+      if (index !== action.index) {
+        // This isn't the item we care about - keep it as-is
+        return item
+      }
+  
+      // Otherwise, this is the one we want - return an updated value
+      else{
+        return {
+            ...item,
+            ...action.mcda
+          }
+      }
+      
+    })
+  }
 
 const rootReducer = combineReducers({projects, phases, mcdas});
 
