@@ -1,15 +1,20 @@
 import React, {Component} from 'react';
 import Header from './Header';
-import Drawflow from 'drawflow'
-import styleDrawflow from 'drawflow/dist/drawflow.min.css'
+import { connect} from 'react-redux';
+import {addAlignment, updateAlignment} from './actions';
+import { ZoomIn, ZoomOut, ArrowsFullscreen } from 'react-bootstrap-icons';
+import Drawflow from 'drawflow';
+import { v4 as uuidv4 } from 'uuid';
+import { randomName } from './NameGenerator';
+
 import './drawflow.css';
 
-const tenents = ["REDUCE OPPORTUNITY FOR HARM","ENHANCED HUMAN EXPERIENCE","OPERATIONAL OPTIMIZATION","INCREASED RESILIENCY"];
-const goals = ["ENGAGEMENT","INCLUSION","WELL-BEING","CLINICAL CARE MODEL","OPERATIONAL EFFICIENCY","CAHNGE READINESS","BUILDING PERFORMANCE","INDIVIDUAL RECOVERY & RESPONSE","SELF HARM","HARM TO OTHERS"];
+const tenets = ["REDUCE OPPORTUNITY FOR HARM","ENHANCED HUMAN EXPERIENCE","OPERATIONAL OPTIMIZATION","INCREASED RESILIENCY","+ NEW"];
+const goals = ["ENGAGEMENT","INCLUSION","WELL-BEING","CLINICAL CARE MODEL","OPERATIONAL EFFICIENCY","CHANGE READINESS","BUILDING PERFORMANCE","INDIVIDUAL RECOVERY & RESPONSE","SELF HARM","HARM TO OTHERS","+ NEW"];
 const outcomes = ["ENHANCE PATIENT EXPERIENCE","ENHANCE STAFF ENGAGEMENT / EXPERIENCE","IMPROVE PATIENT ENGAGEMENT","IMPROVE STAFF ENGAGEMENT"
 ,"IMPROVE STAFF ENGAGEMENT","IMPROVE FAMILY ENGAGEMENT","IMPROVE COMMUNITY ENGAGEMENT","DECREASE LENGTH OF STAY","INCREASE CARE PROCESSES & EFFICIENCY"
 ," INCREASE BUILDING FLEXIBILITY","ENHANCE BUILDING PERFORMANCE","PROMOTE RECOVERY & DISEASE MANAGEMENT","REDUCE VIOLENCE/AGGRESSIVE INCIDENTS"
-,"REDUCE ENVIRONMENTAL RISKS/HAZARDS"];
+,"REDUCE ENVIRONMENTAL RISKS/HAZARDS","+ NEW"];
 
 var mobile_item_selec = '';
     var mobile_last_move = null;
@@ -20,43 +25,53 @@ class AlignmentModeller extends Component{
         this.addNodeToDrawFlow = this.addNodeToDrawFlow.bind(this);
         this.drop = this.drop.bind(this);
       }
+
+      state ={
+        components:tenets,
+        currentModel :{}
+      }
     render(){
+
+      
+        let { alignments} = this.props;
+        
+        
+
         const mystyle = {
             display: "block",
           position: "relative",
-        width: "100%",
+          width: "100%",
           height: "800px",
           };
         return(
             <div>
                 <Header/>
                 <h4>Alignment modeller</h4>
-                <div className="tab">
-                <button className="tablinks" onClick={this.openTab( 'Goals')}>Goals</button>
-                <button className="tablinks" onClick={this.openTab( 'Tenets')}>Tenets</button>
-                <button className="tablinks" onClick={this.openTab( 'Outcomes')}>Outcomes</button>
-                </div>
+                <div>Alignment model : <input type="text" name="name" defaultValue={this.state.currentModel.name}/></div>
                 <div className="float-container">
-                
 
                 <div className="float-child" id="Tenets"> 
+                <button onClick={() => this.toggleComponentMenu('goals')}>Goals</button>
+                <button onClick={() => this.toggleComponentMenu('tenets')}>Tenets</button>
+                <button onClick={() => this.toggleComponentMenu('outcomes')}>Outcomes</button>
+                <hr/>
                 {
-                    tenents.map((tenent, index) => {
+                  
+                  this.state.components.map((tenent, index) => {
                         return(
-                            <div className="drag-drawflow" draggable="true" onDragStart={this.drag} data-node={tenent}>
-                            <i className="fab fa-facebook"></i><span>{tenent}</span>
+                            <div key = {index} className="drag-drawflow" draggable="true" onDragStart={this.drag} data-node={tenent}>
+                            <span>{tenent}</span>
                             </div>
                         )
                     })
                 }
                 </div>
+                <div className='float-child canvas'>
+                <button onClick={() => this.saveModel()}>Save</button>
+                <button onClick={() => editor.zoom_in()}><ZoomIn /></button>
+                <button onClick={() => editor.zoom_out()}><ZoomOut /></button>
+                <button onClick={() => editor.zoom_reset()}><ArrowsFullscreen/></button>
 
-                
-
-                
-
-                
-                <div className='float-child'>Canvas
                 <div style={mystyle} id="drawflow" onDrop={this.drop} onDragOver={this.allowDrop}></div>
                     
                 </div>
@@ -67,10 +82,28 @@ class AlignmentModeller extends Component{
         )
     }
 
-    openTab(evt, element){
-        var i, tabcontent, tablinks;
-        tabcontent = document.getElementsByClassName("tabcontent");
-        
+    saveModel(){
+      var exportdata = editor.export();
+      
+      this.state.currentModel.data = exportdata;
+      console.log('saving',this.state.currentModel);
+      //this.props.updateAlignment(this.state.currentModel);
+    }
+
+    toggleComponentMenu(name, event){
+        console.log(name);
+        switch(name)
+        {
+          case 'goals':
+            this.setState({components: goals});
+            return;
+          case 'tenets':
+            this.setState({components: tenets});
+            return;
+          case 'outcomes':
+            this.setState({components: outcomes});
+            return;
+        }
     }
 
     allowDrop(ev) {
@@ -116,6 +149,15 @@ class AlignmentModeller extends Component{
     }
 
     componentDidMount(){
+
+      let params = new URLSearchParams(window.location.search);
+      let id = params.get('id');
+      this.setState({currentModel : {name: randomName('ALIGNMENT') , id : uuidv4(), data : {} }});
+      if(id !== null)
+      {
+        this.setState({currentModel :this.props.alignments.find(element => element.id === id)});
+      }
+
     const container = document.getElementById("drawflow");
     editor = new Drawflow(container);
 
@@ -187,4 +229,12 @@ class AlignmentModeller extends Component{
     }
 }
 
-export default AlignmentModeller;
+function mapStateToProps(state){
+    
+  return {
+      
+      alignments: state.rootReducer.alignments,
+  };
+}
+
+export default connect(mapStateToProps,{addAlignment,updateAlignment}) (AlignmentModeller);

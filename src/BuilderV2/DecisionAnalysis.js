@@ -36,9 +36,9 @@ class DecisionAnalysis extends Component{
         }
             
         else {
-            this.state.mcda.id =uuidv4();
-            console.log("saving new mcda",this.state.mcda);
-            this.save();
+           
+            //console.log("saving new mcda",this.state.mcda);
+            this.save(this.state.mcda);
         }
             
 
@@ -61,8 +61,7 @@ class DecisionAnalysis extends Component{
     }
 
     save(){
-        this.props.updateMCDA(this.state.mcda);
-        console.log('saved',this.props.mcdas.find(element => element.id === this.state.mcda.id));
+        //this.props.updateMCDA(this.state.mcda);
     }
 
     new(){
@@ -134,15 +133,16 @@ class DecisionAnalysis extends Component{
     render(){
         
 
-        
+        let {mcdas} = this.props;
+        console.log('mcdas:',mcdas);
         return(
             <div>
                 <Header/>
                 <h4>Multi Criteria Decision Analysis</h4>
                 MCDA: 
-             <input type="text" value={this.state.mcda.name}  onChange={event => this.nameupdate(event.target.value)}/>
-             <button type="button" className="btn btn-secondary" onClick={() => this.new()}>New</button>
-             <button type="button" className="btn btn-secondary" onClick={() => this.save()}>Save</button>
+                <input type="text" value={this.state.mcda.name}  onChange={event => this.nameupdate(event.target.value)}/>
+                <button type="button" className="btn btn-secondary" onClick={() => this.new()}>New</button>
+                <button type="button" className="btn btn-secondary" onClick={() => this.save()}>Save</button>
              <hr/>
              <div className='flex-parent'>
                 <div className="flex-child">
@@ -207,4 +207,4 @@ function mapStateToProps(state){
     };
 }
 
-export default connect(mapStateToProps,{addMCDA, updateMCDA,getMCDA}) (DecisionAnalysis);
+export default connect(mapStateToProps,{addMCDA, updateMCDA ,getMCDA}) (DecisionAnalysis);

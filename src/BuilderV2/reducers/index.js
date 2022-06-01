@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { ADD_PROJECT, ADD_PHASE, GET_PROJECT, GET_MCDA, ADD_MCDA, UPDATE_MCDA } from "../actions";
+import { ADD_PROJECT, ADD_PHASE, GET_PROJECT, GET_MCDA, ADD_MCDA, UPDATE_MCDA,ADD_ALIGNMENT,UPDATE_ALIGNMENT } from "../actions";
 
 
 function projects(state = [], action){
@@ -24,6 +24,27 @@ function phases(state = [], action){
     }
 }
 
+function alignments(state = [], action){
+    switch(action.type){
+        case ADD_ALIGNMENT:
+            state =[...state, action.alignment];
+            return state;
+        case UPDATE_ALIGNMENT:
+            if(state.length === 0){
+                console.log('adding new');
+                return[...state, action.alignment];
+                
+            }
+            else
+            {
+                console.log('updating',action);
+                return updateObjectInArray(state, action);
+            }
+        default:
+            return state;
+    }
+}
+
 function mcdas(state = [], action){
     
     switch(action.type){
@@ -34,10 +55,16 @@ function mcdas(state = [], action){
             return state.find(element => element.id === action.id);
         case UPDATE_MCDA:
             if(state.length === 0){
-                state =[...state, action.mcda];
-                return state;
+                console.log('adding new');
+                return[...state, action.mcda];
+                
             }
-            return updateObjectInArray(state, action);
+            else
+            {
+                console.log('updating');
+                return updateObjectInArray(state, action);
+            }
+                
         default:
             return state;
     }
@@ -45,7 +72,7 @@ function mcdas(state = [], action){
 
 function updateObjectInArray(array, action) {
     return array.map((item,index) => {
-      if (index !== action.index) {
+      if (item.id !== action.alignment.id) {
         // This isn't the item we care about - keep it as-is
         return item
       }
@@ -54,13 +81,13 @@ function updateObjectInArray(array, action) {
       else{
         return {
             ...item,
-            ...action.mcda
+            ...action.alignment
           }
       }
       
     })
   }
 
-const rootReducer = combineReducers({projects, phases, mcdas});
+const rootReducer = combineReducers({projects, phases, mcdas, alignments});
 
 export default rootReducer;

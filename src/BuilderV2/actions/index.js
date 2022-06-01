@@ -4,6 +4,15 @@ export const GET_PROJECT = 'GET_PROJECT'
 export const GET_MCDA = 'GET_MCDA'
 export const ADD_MCDA = 'ADD_MCDA'
 export const UPDATE_MCDA = 'UPDATE_MCDA'
+export const ADD_ALIGNMENT = 'ADD_ALIGNMENT'
+export const UPDATE_ALIGNMENT = 'UPDATE_ALIGNMENT'
+
+export function updateAlignment(alignment){
+    return{
+        type: UPDATE_ALIGNMENT,
+        alignment
+    }
+}
 
 export function addProject(project){
     return{
@@ -16,6 +25,13 @@ export function addPhase(phase){
     return{
         type: ADD_PHASE,
         phase
+    }
+}
+
+export function addAlignment(alignment){
+    return{
+        type: ADD_ALIGNMENT,
+        alignment
     }
 }
 
