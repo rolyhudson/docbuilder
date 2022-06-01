@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Header from './Header';
 import { connect} from 'react-redux';
-import {getMCDA,addMCDA, getProject} from './actions';
+import {getMCDA,addMCDA, getProject, addAlignment} from './actions';
 import { v4 as uuidv4 } from 'uuid';
 import {Link} from 'react-router-dom';
 import { randomName } from './NameGenerator';
@@ -11,7 +11,7 @@ class Phase extends Component{
 
         let params = new URLSearchParams(window.location.search);
         let id = params.get('id');
-console.log(this.props);
+        console.log(this.props);
         let { mcdas} = this.props;
         let parentProject = this.props.phases.find(element => element.id === id);
 
